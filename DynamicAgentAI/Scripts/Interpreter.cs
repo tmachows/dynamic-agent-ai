@@ -9,7 +9,7 @@ public class Interpreter
     {
         OutputAction outputAction = new OutputAction();
         outputAction.ActionsToPerform.AddRange(intermediateResult);
-        // todo set intermediate result on detailed output
+        SetRawOutput(intermediateResult, outputAction);
         foreach (var rule in rules)
         {
             switch (rule.Relation)
@@ -55,6 +55,28 @@ public class Interpreter
 
     private void ApplyPrioritizes(Rule rule, OutputAction outputAction)
     {
-        throw new NotImplementedException();
+        List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
+        if (actionNames.Contains(rule.action1))
+        {
+            Action desiredAction = outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action2));
+            desiredAction.Probability = Math.Min(1.0, desiredAction.Probability * 2);
+        }
+    }
+
+    private void SetRawOutput(List<Action> intermediateResult, OutputAction outputAction)
+    {
+        List<double> probabilities = new List<double>();
+        string currentGroup = intermediateResult[0].GroupName;
+        foreach (var action in intermediateResult)
+        {
+            if (!currentGroup.Equals(action.GroupName))
+            {
+                outputAction.RawOutput.Add(currentGroup, probabilities.ToArray());
+                currentGroup = action.GroupName;
+                probabilities.Clear();
+            }
+            probabilities.Add(action.Probability);
+        }
+        outputAction.RawOutput.Add(currentGroup, probabilities.ToArray());
     }
 }

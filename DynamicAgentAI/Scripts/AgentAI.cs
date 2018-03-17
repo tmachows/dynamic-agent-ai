@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class AgentAI : MonoBehaviour
+public class AgentAI
 {
     private IAiModel AiModel;
     private Interpreter Interpreter;
@@ -13,9 +12,9 @@ public class AgentAI : MonoBehaviour
         AiModel.BuildModel(sampleInput);
     }
 
-    public OutputAction Evaluate(InputData input)
+    public OutputAction ComputeActions(InputData input)
     {
-        List<Action> intermediateResult = AiModel.Evaluate(input);
+        List<Action> intermediateResult = AiModel.ComputeActions(input);
         return Interpreter.ApplyRules(intermediateResult, Rules);
     }
 
@@ -24,8 +23,8 @@ public class AgentAI : MonoBehaviour
         this.Rules = rules;
     }
 
-    public void Train(InputData input, OutputAction expectedOutput)
+    public void Train(InputData input, OutputAction expectedOutput, int iterations)
     {
-        AiModel.Train(input, expectedOutput);
+        AiModel.Train(input, expectedOutput, iterations);
     }
 }
