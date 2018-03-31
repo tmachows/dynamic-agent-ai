@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public interface IAiModel
+namespace DynamicAgentAI
 {
-    void BuildModel(InputData sampleInput);
+    public interface IAiModel
+    {
+        void BuildModel(InputData sampleInput);
 
-    List<Action> ComputeActions(InputData input);
+        List<Action> ComputeActions(InputData input);
 
-    void Train(InputData input, OutputAction expectedOutput, int iterations);
+        void Train(InputData input, OutputAction expectedOutput, int iterations);
+    }
 }

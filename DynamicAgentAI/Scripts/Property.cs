@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Property
+namespace DynamicAgentAI
 {
-    public string Name { get; set; }
-    public double Value { get; set; }
+    public class Property
+    {
+        public string Name { get; set; }
+        public double Value { get; set; }
+    }
 }

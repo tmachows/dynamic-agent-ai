@@ -3,80 +3,82 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Interpreter
+namespace DynamicAgentAI
 {
-    public OutputAction ApplyRules(List<Action> intermediateResult, List<Rule> rules)
+    public class Interpreter
     {
-        OutputAction outputAction = new OutputAction();
-        outputAction.ActionsToPerform.AddRange(intermediateResult);
-        SetRawOutput(intermediateResult, outputAction);
-        foreach (var rule in rules)
+        public OutputAction ApplyRules(List<Action> intermediateResult, List<Rule> rules)
         {
-            switch (rule.Relation)
+            OutputAction outputAction = new OutputAction();
+            outputAction.ActionsToPerform.AddRange(intermediateResult);
+            SetRawOutput(intermediateResult, outputAction);
+            foreach (var rule in rules)
             {
-                case Relation.EXCLUDES:
-                    ApplyExcludes(rule, outputAction);
-                    break;
-                case Relation.FORCES:
-                    ApplyForces(rule, outputAction);
-                    break;
-                case Relation.PRIORITIZES:
-                    ApplyPrioritizes(rule, outputAction);
-                    break;
-                default:
-                    break;
-                    
+                switch (rule.Relation)
+                {
+                    case Relation.EXCLUDES:
+                        ApplyExcludes(rule, outputAction);
+                        break;
+                    case Relation.FORCES:
+                        ApplyForces(rule, outputAction);
+                        break;
+                    case Relation.REINFORCES:
+                        ApplyReinforces(rule, outputAction);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return outputAction;
+        }
+
+        private void ApplyExcludes(Rule rule, OutputAction outputAction)
+        {
+            List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
+            if (actionNames.Contains(rule.action1))
+            {
+                outputAction.ActionsToPerform.RemoveAll(action => action.Name.Equals(rule.action2));
             }
         }
-        return outputAction;
-    }
 
-    private void ApplyExcludes(Rule rule, OutputAction outputAction)
-    {
-        List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
-        if (actionNames.Contains(rule.action1))
+        private void ApplyForces(Rule rule, OutputAction outputAction)
         {
-            outputAction.ActionsToPerform.RemoveAll(action => action.Name.Equals(rule.action2));
-        }
-    }
-
-    private void ApplyForces(Rule rule, OutputAction outputAction)
-    {
-        List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
-        if (actionNames.Contains(rule.action1) && !actionNames.Contains(rule.action2))
-        {
-            Action actionToAdd = new Action();
-            actionToAdd.Name = rule.action2;
-            actionToAdd.Probability =
-                outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action1)).Probability;
-            outputAction.ActionsToPerform.Add(actionToAdd);
-        }
-    }
-
-    private void ApplyPrioritizes(Rule rule, OutputAction outputAction)
-    {
-        List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
-        if (actionNames.Contains(rule.action1))
-        {
-            Action desiredAction = outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action2));
-            desiredAction.Probability = Math.Min(1.0, desiredAction.Probability * 2);
-        }
-    }
-
-    private void SetRawOutput(List<Action> intermediateResult, OutputAction outputAction)
-    {
-        List<double> probabilities = new List<double>();
-        string currentGroup = intermediateResult[0].GroupName;
-        foreach (var action in intermediateResult)
-        {
-            if (!currentGroup.Equals(action.GroupName))
+            List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
+            if (actionNames.Contains(rule.action1) && !actionNames.Contains(rule.action2))
             {
-                outputAction.RawOutput.Add(currentGroup, probabilities.ToArray());
-                currentGroup = action.GroupName;
-                probabilities.Clear();
+                Action actionToAdd = new Action();
+                actionToAdd.Name = rule.action2;
+                actionToAdd.Probability =
+                    outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action1)).Probability;
+                outputAction.ActionsToPerform.Add(actionToAdd);
             }
-            probabilities.Add(action.Probability);
         }
-        outputAction.RawOutput.Add(currentGroup, probabilities.ToArray());
+
+        private void ApplyReinforces(Rule rule, OutputAction outputAction)
+        {
+            List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
+            if (actionNames.Contains(rule.action1))
+            {
+                Action desiredAction = outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action2));
+                desiredAction.Probability = Math.Min(1.0, desiredAction.Probability * 2);
+            }
+        }
+
+        private void SetRawOutput(List<Action> intermediateResult, OutputAction outputAction)
+        {
+            List<double> probabilities = new List<double>();
+            string currentGroup = intermediateResult[0].GroupName;
+            foreach (var action in intermediateResult)
+            {
+                if (!currentGroup.Equals(action.GroupName))
+                {
+                    outputAction.RawOutput.Add(currentGroup, probabilities.ToArray());
+                    currentGroup = action.GroupName;
+                    probabilities.Clear();
+                }
+                probabilities.Add(action.Probability);
+            }
+            outputAction.RawOutput.Add(currentGroup, probabilities.ToArray());
+        }
     }
 }

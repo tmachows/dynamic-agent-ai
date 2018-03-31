@@ -1,30 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class AgentAI
+namespace DynamicAgentAI
 {
-    private IAiModel AiModel;
-    private Interpreter Interpreter;
-    private List<Rule> Rules;
-
-    public void PrepareModel(InputData sampleInput)
+    public class AgentAI
     {
-        AiModel.BuildModel(sampleInput);
-    }
+        private IAiModel AiModel;
+        private Interpreter Interpreter;
+        private List<Rule> Rules;
 
-    public OutputAction ComputeActions(InputData input)
-    {
-        List<Action> intermediateResult = AiModel.ComputeActions(input);
-        return Interpreter.ApplyRules(intermediateResult, Rules);
-    }
+        public void PrepareModel(InputData sampleInput)
+        {
+            AiModel.BuildModel(sampleInput);
+        }
 
-    public void ProvideRules(List<Rule> rules)
-    {
-        this.Rules = rules;
-    }
+        public OutputAction ComputeActions(InputData input)
+        {
+            List<Action> intermediateResult = AiModel.ComputeActions(input);
+            return Interpreter.ApplyRules(intermediateResult, Rules);
+        }
 
-    public void Train(InputData input, OutputAction expectedOutput, int iterations)
-    {
-        AiModel.Train(input, expectedOutput, iterations);
+        public void ProvideRules(List<Rule> rules)
+        {
+            this.Rules = rules;
+        }
+
+        public void Train(InputData input, OutputAction expectedOutput, int iterations)
+        {
+            AiModel.Train(input, expectedOutput, iterations);
+        }
     }
 }

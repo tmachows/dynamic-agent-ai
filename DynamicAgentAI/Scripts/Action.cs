@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Action
+namespace DynamicAgentAI
 {
-    public string Name { get; set; }
-    public double Probability { get; set; }
-    public string GroupName { get; set; }
+    public class Action
+    {
+        public string Name { get; set; }
+        public double Probability { get; set; }
+        public string GroupName { get; set; }
+    }
 }
