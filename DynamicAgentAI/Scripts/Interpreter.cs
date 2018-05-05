@@ -10,7 +10,7 @@ namespace DynamicAgentAI
         public OutputAction ApplyRules(List<Action> intermediateResult, List<Rule> rules)
         {
             OutputAction outputAction = new OutputAction();
-            outputAction.ActionsToPerform.AddRange(intermediateResult);
+            outputAction.ActionsToPerform = intermediateResult;
             SetRawOutput(intermediateResult, outputAction);
             foreach (var rule in rules)
             {
@@ -67,6 +67,7 @@ namespace DynamicAgentAI
         private void SetRawOutput(List<Action> intermediateResult, OutputAction outputAction)
         {
             List<double> probabilities = new List<double>();
+            outputAction.RawOutput = new Dictionary<string, double[]>();
             string currentGroup = intermediateResult[0].GroupName;
             foreach (var action in intermediateResult)
             {

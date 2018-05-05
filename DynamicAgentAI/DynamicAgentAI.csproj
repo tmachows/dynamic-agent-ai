@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,23 +34,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Accord.3.8.0\lib\net35\Accord.dll</HintPath>
+      <HintPath>..\packages\Accord.3.8.0\lib\net35-unity web v3.5\Accord.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Accord.Genetic, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Accord.Genetic.3.8.0\lib\net35\Accord.Genetic.dll</HintPath>
+      <HintPath>..\packages\Accord.Genetic.3.8.0\lib\net35-unity web v3.5\Accord.Genetic.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Accord.Math, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Accord.Math.3.8.0\lib\net35\Accord.Math.dll</HintPath>
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net35-unity web v3.5\Accord.Math.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Accord.Math.Core, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Accord.Math.3.8.0\lib\net35\Accord.Math.Core.dll</HintPath>
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net35-unity web v3.5\Accord.Math.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Accord.Neuro, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Accord.Neuro.3.8.0\lib\net35\Accord.Neuro.dll</HintPath>
+      <HintPath>..\packages\Accord.Neuro.3.8.0\lib\net35-unity web v3.5\Accord.Neuro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Accord.Statistics, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Statistics.3.8.0\lib\net35-unity web v3.5\Accord.Statistics.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

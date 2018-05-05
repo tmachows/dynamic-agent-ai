@@ -7,5 +7,11 @@ namespace DynamicAgentAI
     {
         public string Name { get; set; }
         public double Value { get; set; }
+
+        public Property(string name, double value)
+        {
+            this.Name = name;
+            this.Value = value;
+        }
     }
 }

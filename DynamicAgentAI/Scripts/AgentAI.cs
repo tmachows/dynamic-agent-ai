@@ -5,12 +5,13 @@ namespace DynamicAgentAI
 {
     public class AgentAI
     {
-        private IAiModel AiModel;
-        private Interpreter Interpreter;
-        private List<Rule> Rules;
+        public IAiModel AiModel { get; set; } = new NeuralNetsAiModel();
+        private Interpreter Interpreter = new Interpreter();
+        private List<Rule> Rules = new List<Rule>();
 
-        public void PrepareModel(InputData sampleInput)
+        public void PrepareModel(IAiModel model, InputData sampleInput)
         {
+            AiModel = new NeuralNetsAiModel();
             AiModel.BuildModel(sampleInput);
         }
 
