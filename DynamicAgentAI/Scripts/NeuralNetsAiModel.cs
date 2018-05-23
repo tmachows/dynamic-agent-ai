@@ -45,15 +45,7 @@ namespace DynamicAgentAI
         {
             foreach (var inputGroup in input.InputGroups)
             {
-                ActivationNetwork network = Networks[inputGroup.Name];
-                BackPropagationLearning learning = new BackPropagationLearning(network);
-                learning.LearningRate = LearningRate;
-                learning.Momentum = Momentum;
-
-                for (int i = 0; i < iterations; i++)
-                {
-                    learning.Run(InputGroupToPropertiesArray(inputGroup), expectedOutput.RawOutput[inputGroup.Name]);
-                }
+                TrainSelectively(inputGroup, expectedOutput.RawOutput[inputGroup.Name], iterations);
             }
             if (LearningRate > 0.2)
             {
@@ -68,6 +60,27 @@ namespace DynamicAgentAI
         private static double[] InputGroupToPropertiesArray(InputGroup inputGroup)
         {
             return inputGroup.Properties.Select(property => property.Value).ToArray();
+        }
+
+        public void TrainSelectively(InputGroup inputGroup, double[] expectedOutput, int iterations)
+        {
+            ActivationNetwork network = Networks[inputGroup.Name];
+            BackPropagationLearning learning = new BackPropagationLearning(network);
+            learning.LearningRate = LearningRate;
+            learning.Momentum = Momentum;
+
+            for (int i = 0; i < iterations; i++)
+            {
+                learning.Run(InputGroupToPropertiesArray(inputGroup), expectedOutput);
+            }
+            if (LearningRate > 0.2)
+            {
+                LearningRate *= 0.99;
+            }
+            if (Momentum > 0.0)
+            {
+                Momentum *= 0.99;
+            }
         }
     }
 }

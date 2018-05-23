@@ -5,8 +5,8 @@ namespace DynamicAgentAI
 {
     public class Rule
     {
-        public string action1 { get; set; }
+        public string Action1 { get; set; }
         public Relation Relation { get; set; }
-        public string action2 { get; set; }
+        public string Action2 { get; set; }
     }
 }

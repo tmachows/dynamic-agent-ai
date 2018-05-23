@@ -35,21 +35,21 @@ namespace DynamicAgentAI
         private void ApplyExcludes(Rule rule, OutputAction outputAction)
         {
             List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
-            if (actionNames.Contains(rule.action1))
+            if (actionNames.Contains(rule.Action1))
             {
-                outputAction.ActionsToPerform.RemoveAll(action => action.Name.Equals(rule.action2));
+                outputAction.ActionsToPerform.RemoveAll(action => action.Name.Equals(rule.Action2));
             }
         }
 
         private void ApplyForces(Rule rule, OutputAction outputAction)
         {
             List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
-            if (actionNames.Contains(rule.action1) && !actionNames.Contains(rule.action2))
+            if (actionNames.Contains(rule.Action1) && !actionNames.Contains(rule.Action2))
             {
                 Action actionToAdd = new Action();
-                actionToAdd.Name = rule.action2;
+                actionToAdd.Name = rule.Action2;
                 actionToAdd.Probability =
-                    outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action1)).Probability;
+                    outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.Action1)).Probability;
                 outputAction.ActionsToPerform.Add(actionToAdd);
             }
         }
@@ -57,9 +57,9 @@ namespace DynamicAgentAI
         private void ApplyReinforces(Rule rule, OutputAction outputAction)
         {
             List<string> actionNames = outputAction.ActionsToPerform.Select(action => action.Name).ToList();
-            if (actionNames.Contains(rule.action1))
+            if (actionNames.Contains(rule.Action1))
             {
-                Action desiredAction = outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.action2));
+                Action desiredAction = outputAction.ActionsToPerform.Find(action => action.Name.Equals(rule.Action2));
                 desiredAction.Probability = Math.Min(1.0, desiredAction.Probability * 2);
             }
         }
