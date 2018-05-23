@@ -10,5 +10,7 @@ namespace DynamicAgentAI
         List<Action> ComputeActions(InputData input);
 
         void Train(InputData input, OutputAction expectedOutput, int iterations);
+
+        void TrainSelectively(InputGroup inputGroup, double[] expectedOutput, int iterations);
     }
 }

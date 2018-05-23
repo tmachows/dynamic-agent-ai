@@ -30,5 +30,10 @@ namespace DynamicAgentAI
         {
             AiModel.Train(input, expectedOutput, iterations);
         }
+
+        public void TrainSelectively(InputGroup inputGroup, double[] expectedOutput, int iterations)
+        {
+            AiModel.TrainSelectively(inputGroup, expectedOutput, iterations);
+        }
     }
 }
