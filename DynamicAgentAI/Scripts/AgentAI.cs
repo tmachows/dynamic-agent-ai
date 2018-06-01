@@ -9,10 +9,10 @@ namespace DynamicAgentAI
         private Interpreter Interpreter = new Interpreter();
         private List<Rule> Rules = new List<Rule>();
 
-        public void PrepareModel(IAiModel model, InputData sampleInput)
+        public void PrepareModel(IAiModel model, InputData sampleInput, bool loadFromFiles)
         {
             AiModel = new NeuralNetsAiModel();
-            AiModel.BuildModel(sampleInput);
+            AiModel.BuildModel(sampleInput, loadFromFiles);
         }
 
         public OutputAction ComputeActions(InputData input)

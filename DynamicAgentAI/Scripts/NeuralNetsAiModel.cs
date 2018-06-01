@@ -14,14 +14,22 @@ namespace DynamicAgentAI
         private double LearningRate = 0.8;
         private double Momentum = 0.9;
 
-        public void BuildModel(InputData sampleInput)
+        public void BuildModel(InputData sampleInput, bool loadFromFiles)
         {
             foreach (var inputGroup in sampleInput.InputGroups)
             {
-                int inputLayerSize = inputGroup.Properties.Count;
-                int hiddenLayerSize = inputLayerSize * 2;
-                int outputLayerSize = inputGroup.PossibleActions.Count;
-                ActivationNetwork network = new ActivationNetwork(new SigmoidFunction(), inputLayerSize, hiddenLayerSize, outputLayerSize);
+                ActivationNetwork network = null;
+                if (loadFromFiles)
+                {
+                    network = (ActivationNetwork) Network.Load(inputGroup.Name);
+                }
+                else
+                {
+                    int inputLayerSize = inputGroup.Properties.Count;
+                    int hiddenLayerSize = inputLayerSize * 2;
+                    int outputLayerSize = inputGroup.PossibleActions.Count;
+                    network = new ActivationNetwork(new SigmoidFunction(), inputLayerSize, hiddenLayerSize, outputLayerSize);
+                }
                 Networks.Add(inputGroup.Name, network);
             }
         }
@@ -71,15 +79,31 @@ namespace DynamicAgentAI
 
             for (int i = 0; i < iterations; i++)
             {
+                if (LearningRate > 0.2)
+                {
+                    LearningRate *= 0.9;
+                }
+                if (Momentum > 0.0)
+                {
+                    Momentum *= 0.9;
+                }
                 learning.Run(InputGroupToPropertiesArray(inputGroup), expectedOutput);
             }
             if (LearningRate > 0.2)
             {
-                LearningRate *= 0.99;
+                LearningRate *= 0.9;
             }
             if (Momentum > 0.0)
             {
-                Momentum *= 0.99;
+                Momentum *= 0.9;
+            }
+        }
+
+        public void PersistModel()
+        {
+            foreach (var network in Networks)
+            {
+                network.Value.Save(network.Key);
             }
         }
     }
